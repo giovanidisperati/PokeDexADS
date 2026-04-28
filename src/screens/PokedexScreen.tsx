@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'; // <-- NOVO IMPORT
 import { getPokemons, getPokemonDetails } from '../services/api';
 import { Pokemon } from '../types/Pokemon';
 import { PokemonCard } from '../components/PokemonCard';
@@ -7,10 +8,11 @@ import { PokemonCard } from '../components/PokemonCard';
 export const PokedexScreen = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [search, setSearch] = useState('');
-  
-  // Novos estados para o Exercício 1
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Pegando a área segura dinamicamente
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +36,8 @@ export const PokedexScreen = () => {
   const filtered = pokemons.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <View style={styles.container}>
+    // Aplicando o paddingTop dinâmico direto no estilo da View
+    <View style={[styles.container, { paddingTop: Math.max(insets.top, 20) + 10 }]}>
       <Text style={styles.title}>Pokédex</Text>
       <TextInput
         placeholder="Buscar pokémon..."
@@ -43,7 +46,6 @@ export const PokedexScreen = () => {
         value={search}
       />
       
-      {/* Lógica de Renderização Condicional */}
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
       ) : error ? (
@@ -54,7 +56,6 @@ export const PokedexScreen = () => {
           keyExtractor={item => item.id.toString()}
           numColumns={2}
           renderItem={({ item }) => <PokemonCard pokemon={item} />}
-          // Exercício 2: Tratamento de Lista Vazia
           ListEmptyComponent={
             <Text style={styles.emptyText}>
               Nenhum Pokémon encontrado para "{search}"
@@ -67,7 +68,8 @@ export const PokedexScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 60, paddingHorizontal: 16 },
+  // Removido o paddingTop fixo daqui!
+  container: { flex: 1, paddingHorizontal: 16 }, 
   title: { fontSize: 32, fontWeight: 'bold', marginBottom: 12 },
   input: {
     backgroundColor: '#f1f1f1',

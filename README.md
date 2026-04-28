@@ -2,15 +2,14 @@
 
 Bem-vindo ao repositório do aplicativo Pokédex, desenvolvido em React Native com Expo! 
 
-Este projeto é construído de forma incremental. Esta branch (`step-02-feedback-visual`) contém a resolução dos **Exercícios 1 e 2** da Aula 04, focando na resiliência da aplicação e no feedback visual ao usuário.
+Este projeto é construído de forma incremental. Esta branch (`step-03-refinamentos-ui`) contém a resolução do **Exercício 4** da Aula 04, focando no polimento visual e na adaptação do layout para diferentes dispositivos.
 
 A explicação completa dos conceitos envolvidos na construção desta PokéDex está disponível na nossa Aula 04: [Construção de Interfaces Visuais com React Native](https://giovanidisperati.github.io/GRUDSMV/aula04).
 
 ## 🎯 O que foi implementado neste passo (e por quê)?
 
-* **Indicador de Carregamento (`ActivityIndicator`):** Adicionamos um estado `isLoading` para exibir um *spinner* enquanto os dados da API estão sendo buscados. Isso evita que o usuário fique olhando para uma tela em branco sem saber se o aplicativo travou.
-* **Tratamento de Erros (`try...catch`):** Blindamos a camada de serviços (`api.ts`). Se a requisição falhar (por exemplo, falha de rede), capturamos o erro e exibimos uma mensagem amigável na tela.
-* **Estado de Lista Vazia (`ListEmptyComponent`):** Utilizamos esta propriedade nativa da `FlatList` para fornecer um feedback claro caso o usuário busque por um Pokémon que não existe, melhorando significativamente a experiência de uso.
+* **Formatação de Texto (`capitalize`):** Criamos uma função utilitária em `src/utils/format.ts` para garantir que o nome de todos os Pokémons comece com letra maiúscula, entregando uma interface mais profissional e bem acabada.
+* **Área Segura Dinâmica (`useSafeAreaInsets`):** Substituímos os espaçamentos fixos no topo da tela pelo hook do `react-native-safe-area-context`. Isso garante que o aplicativo respeite automaticamente o "notch" (entalhe da câmera) e a barra de status de qualquer aparelho, seja Android ou iOS, evitando que o conteúdo fique espremido ou escondido.
 
 ## 📂 Estrutura de Diretórios
 
@@ -18,9 +17,9 @@ A explicação completa dos conceitos envolvidos na construção desta PokéDex 
 PokedexApp/
 ├── App.tsx                 # Entry-point da aplicação
 ├── src/
-│   ├── components/         # Componentes visuais (ex: PokemonCard)
-│   ├── screens/            # Telas (ex: PokedexScreen com lógica de loading/erro)
-│   ├── services/           # Regras de negócio e requisições blindadas (ex: api.ts)
+│   ├── components/         # Componentes visuais (ex: PokemonCard com formatação)
+│   ├── screens/            # Telas (ex: PokedexScreen adaptada para a Safe Area)
+│   ├── services/           # Regras de negócio e chamadas à API
 │   ├── types/              # Definições de interfaces do TypeScript
-│   └── utils/              # Funções utilitárias auxiliares
+│   └── utils/              # Funções utilitárias (ex: format.ts)
 └── package.json            # Dependências do projeto
