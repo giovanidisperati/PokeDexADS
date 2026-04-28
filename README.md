@@ -2,17 +2,15 @@
 
 Bem-vindo ao repositório do aplicativo Pokédex, desenvolvido em React Native com Expo! 
 
-Este projeto é construído de forma incremental. Esta branch (`step-01-api-e-cards`) contém as **fundações** da aplicação, focando em consumo de API, tipagem de dados e renderização de listas.
+Este projeto é construído de forma incremental. Esta branch (`step-02-feedback-visual`) contém a resolução dos **Exercícios 1 e 2** da Aula 04, focando na resiliência da aplicação e no feedback visual ao usuário.
 
-A explicação completa dos conceitos envolvidos na construção dessa PokéDex está disponível na nossa Aula 04: [Construção de Interfaces Visuais com React Native](https://giovanidisperati.github.io/GRUDSMV/aula04).
+A explicação completa dos conceitos envolvidos na construção desta PokéDex está disponível na nossa Aula 04: [Construção de Interfaces Visuais com React Native](https://giovanidisperati.github.io/GRUDSMV/aula04).
 
 ## 🎯 O que foi implementado neste passo (e por quê)?
 
-* **Setup e Arquitetura de Pastas (`src/`):** Adotamos o padrão de mercado para isolar o código da aplicação (regras e UI) das configurações de infraestrutura do Expo na raiz. Isso nos ajuda a garantir a separação de responsabilidades.
-* **Tipagem Estática (`types/`):** Criação das interfaces no `Pokemon.ts` para garantir contratos rígidos com a PokeAPI. Tipar os dados evita bugs de "undefined" em tempo de execução e melhora a experiência de desenvolvimento (autocomplete).
-* **Camada de Serviços (`services/`):** Configuração do `axios` no `api.ts`. A tela não precisa (e nem deve) saber *como* os dados são buscados na internet. Ela apenas consome essa camada isolada.
-* **Componentização UI (`components/`):** Criação do `PokemonCard`. Em vez de um código gigante na tela principal, encapsulamos a estrutura e a estilização do card, permitindo que ele seja reutilizado e receba dados via `props`.
-* **Listas Performáticas (`screens/`):** Uso da `FlatList` na `PokedexScreen`. Diferente do `.map()` tradicional com `ScrollView`, a `FlatList` renderiza e descarta itens sob demanda, garantindo uma boa performance mesmo com dezenas de Pokémons!
+* **Indicador de Carregamento (`ActivityIndicator`):** Adicionamos um estado `isLoading` para exibir um *spinner* enquanto os dados da API estão sendo buscados. Isso evita que o usuário fique olhando para uma tela em branco sem saber se o aplicativo travou.
+* **Tratamento de Erros (`try...catch`):** Blindamos a camada de serviços (`api.ts`). Se a requisição falhar (por exemplo, falha de rede), capturamos o erro e exibimos uma mensagem amigável na tela.
+* **Estado de Lista Vazia (`ListEmptyComponent`):** Utilizamos esta propriedade nativa da `FlatList` para fornecer um feedback claro caso o usuário busque por um Pokémon que não existe, melhorando significativamente a experiência de uso.
 
 ## 📂 Estrutura de Diretórios
 
@@ -20,26 +18,9 @@ A explicação completa dos conceitos envolvidos na construção dessa PokéDex 
 PokedexApp/
 ├── App.tsx                 # Entry-point da aplicação
 ├── src/
-│   ├── components/         # Componentes visuais reutilizáveis (ex: PokemonCard)
-│   ├── screens/            # Telas completas da aplicação (ex: PokedexScreen)
-│   ├── services/           # Regras de negócio e chamadas externas (ex: api.ts)
+│   ├── components/         # Componentes visuais (ex: PokemonCard)
+│   ├── screens/            # Telas (ex: PokedexScreen com lógica de loading/erro)
+│   ├── services/           # Regras de negócio e requisições blindadas (ex: api.ts)
 │   ├── types/              # Definições de interfaces do TypeScript
 │   └── utils/              # Funções utilitárias auxiliares
 └── package.json            # Dependências do projeto
-```
-
-## 🚀 Como rodar o projeto
-
-1. Clone o repositório e faça o checkout para esta branch:
-   ```bash
-   git checkout step-01-api-e-cards
-   ```
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
-3. Inicie o servidor do Expo:
-   ```bash
-   npx expo start
-   ```
-4. Pressione `a` para abrir no emulador Android ou escaneie o QR Code com o app Expo Go no seu celular.
