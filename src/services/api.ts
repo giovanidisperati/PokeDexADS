@@ -1,15 +1,15 @@
-import axios from 'axios';
-import { Pokemon, PokemonListItem } from '../types/Pokemon';
+import axios from "axios";
+import { Pokemon, PokemonListItem } from "../types/Pokemon";
 
-const API_BASE = 'https://pokeapi.co/api/v2';
+const API_BASE = "https://pokeapi.co/api/v2";
 
 export async function getPokemons(limit: number): Promise<PokemonListItem[]> {
   try {
     const res = await axios.get(`${API_BASE}/pokemon?limit=${limit}`);
     return res.data.results;
   } catch (error) {
-    console.error('Erro ao buscar lista de pokémons:', error);
-    throw new Error('Falha ao carregar a lista de Pokémons.');
+    console.error("Erro ao buscar lista de pokémons:", error);
+    throw new Error("Falha ao carregar a lista de Pokémons.");
   }
 }
 
@@ -23,7 +23,22 @@ export async function getPokemonDetails(url: string): Promise<Pokemon> {
       types: res.data.types.map((t: any) => t.type.name),
     };
   } catch (error) {
-    console.error('Erro ao buscar detalhes do pokémon:', error);
-    throw new Error('Falha ao carregar detalhes do Pokémon.');
+    console.error("Erro ao buscar detalhes do pokémon:", error);
+    throw new Error("Falha ao carregar detalhes do Pokémon.");
+  }
+}
+
+export async function getPokemonById(id: number): Promise<Pokemon> {
+  try {
+    const res = await axios.get(`${API_BASE}/pokemon/${id}`);
+    return {
+      id: res.data.id,
+      name: res.data.name,
+      image: res.data.sprites.front_default,
+      types: res.data.types.map((t: any) => t.type.name),
+    };
+  } catch (error) {
+    console.error(`Erro ao buscar Pokémon com ID ${id}:`, error);
+    throw new Error("Falha ao carregar detalhes deste Pokémon.");
   }
 }
