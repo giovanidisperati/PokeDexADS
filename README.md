@@ -2,24 +2,40 @@
 
 Bem-vindo ao repositório do aplicativo Pokédex, desenvolvido em React Native com Expo! 
 
-Este projeto é construído de forma incremental. Esta branch (`step-03-refinamentos-ui`) contém a resolução do **Exercício 4** da Aula 04, focando no polimento visual e na adaptação do layout para diferentes dispositivos.
+Este projeto é construído de forma incremental. Esta branch (`step-04-navegacao`) marca o início da nossa **Aula 05**, introduzindo a navegação entre telas na aplicação.
 
-A explicação completa dos conceitos envolvidos na construção desta PokéDex está disponível na nossa Aula 04: [Construção de Interfaces Visuais com React Native](https://giovanidisperati.github.io/GRUDSMV/aula04).
+A explicação completa dos conceitos de navegação, roteamento e arquitetura está disponível na nossa Aula 05: [Navegação e Organização de Aplicações com React Native](https://giovanidisperati.github.io/GRUDSMV/aula05).
 
 ## 🎯 O que foi implementado neste passo (e por quê)?
 
-* **Formatação de Texto (`capitalize`):** Criamos uma função utilitária em `src/utils/format.ts` para garantir que o nome de todos os Pokémons comece com letra maiúscula, entregando uma interface mais profissional e bem acabada.
-* **Área Segura Dinâmica (`useSafeAreaInsets`):** Substituímos os espaçamentos fixos no topo da tela pelo hook do `react-native-safe-area-context`. Isso garante que o aplicativo respeite automaticamente o "notch" (entalhe da câmera) e a barra de status de qualquer aparelho, seja Android ou iOS, evitando que o conteúdo fique espremido ou escondido.
+* **React Navigation:** Instalação e configuração do `@react-navigation/native` e do `native-stack` para gerenciar o fluxo de telas no padrão de "pilha".
+* **Contrato de Tipagem (`Navigation.ts`):** Criação do `RootStackParamList` para tipar as rotas estaticamente. Isso garante que o TypeScript valide se estamos passando os parâmetros corretos (ex: `pokemonId`) ao mudar de tela, evitando bugs em tempo de execução.
+* **Roteador Principal (`App.tsx`):** Substituição da renderização estática pelo `NavigationContainer` e `Stack.Navigator`, que passam a gerenciar as transições e o histórico da aplicação.
+* **Cartões Interativos (`PokemonCard`):** Adição do `TouchableOpacity` e do hook `useNavigation` para transformar os cartões visuais em botões que disparam a navegação passando o ID do Pokémon.
+* **Tela de Detalhes (Esqueleto):** Criação da `PokemonDetailsScreen.tsx` (inicialmente como um *placeholder*) para receber a ação de navegação.
 
 ## 📂 Estrutura de Diretórios
 
 ```text
 PokedexApp/
-├── App.tsx                 # Entry-point da aplicação
+├── App.tsx                 # Roteador principal (NavigationContainer e Stack)
 ├── src/
-│   ├── components/         # Componentes visuais (ex: PokemonCard com formatação)
-│   ├── screens/            # Telas (ex: PokedexScreen adaptada para a Safe Area)
+│   ├── components/         # Componentes (ex: PokemonCard agora interativo)
+│   ├── screens/            # Telas (PokedexScreen e a nova PokemonDetailsScreen)
 │   ├── services/           # Regras de negócio e chamadas à API
-│   ├── types/              # Definições de interfaces do TypeScript
-│   └── utils/              # Funções utilitárias (ex: format.ts)
-└── package.json            # Dependências do projeto
+│   ├── types/              # Definições (Pokemon.ts e o novo Navigation.ts)
+│   └── utils/              # Funções utilitárias auxiliares
+└── package.json            # Dependências (incluindo React Navigation)
+```
+
+🚀 Como testar localmente
+
+Clone o repositório e mude para esta branch:
+
+git checkout step-04-navegacao
+
+Instale as dependências com npm install (passo vital, pois adicionamos bibliotecas nativas de navegação).
+
+Inicie o servidor com npx expo start.
+
+Abra no emulador, clique em qualquer Pokémon da lista e veja a transição animada para a tela de detalhes!
