@@ -1,3 +1,4 @@
+// src/screens/PokemonDetailsScreen.tsx
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -6,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
 
@@ -13,6 +15,7 @@ import { RootStackParamList } from "../types/Navigation";
 import { Pokemon } from "../types/Pokemon";
 import { getPokemonById } from "../services/api";
 import { capitalize } from "../utils/format";
+import { useFavorites } from "../context/FavoritesContext";
 
 // Tipamos a rota para saber que dentro de 'params' existe um 'pokemonId' numérico
 type PokemonDetailsScreenRouteProp = RouteProp<
@@ -27,6 +30,10 @@ export const PokemonDetailsScreen = () => {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Consumimos o contexto de favoritos: precisamos saber se o Pokémon exibido
+  // é favorito e permitir alternar o estado a partir desta tela.
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -59,6 +66,8 @@ export const PokemonDetailsScreen = () => {
     return <Text style={styles.centered}>Pokémon não encontrado.</Text>;
   }
 
+  const favorite = isFavorite(pokemon.id);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={{ uri: pokemon.image }} style={styles.image} />
@@ -74,6 +83,23 @@ export const PokemonDetailsScreen = () => {
           </Text>
         ))}
       </View>
+
+      {/* Botão de favoritar/Desfavoritar.
+          Usamos o mesmo toggle do contexto: o estado e o ícone refletem
+          instantaneamente a fonte da verdade global (FavoritesProvider). */}
+      <TouchableOpacity
+        style={[styles.favoriteButton, favorite && styles.favoriteButtonActive]}
+        onPress={() => toggleFavorite(pokemon)}
+      >
+        <Text
+          style={[
+            styles.favoriteButtonText,
+            favorite && styles.favoriteButtonTextActive,
+          ]}
+        >
+          {favorite ? "❤️ Remover dos Favoritos" : "🤍 Adicionar aos Favoritos"}
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -130,5 +156,27 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 4,
     overflow: "hidden",
+  },
+  favoriteButton: {
+    marginTop: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: "#e63946",
+    backgroundColor: "#fff",
+  },
+  favoriteButtonActive: {
+    backgroundColor: "#e63946",
+  },
+  favoriteButtonText: {
+    color: "#e63946",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  // Quando o botão está ativo (fundo vermelho), o texto precisa ficar branco
+  // para manter o contraste e a legibilidade.
+  favoriteButtonTextActive: {
+    color: "#fff",
   },
 });
