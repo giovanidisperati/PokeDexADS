@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'; // <-- NOVO 
 import { getPokemons, getPokemonDetails } from '../services/api';
 import { Pokemon } from '../types/Pokemon';
 import { PokemonCard } from '../components/PokemonCard';
+import { LogoutButton } from '../components/LogoutButton';
 
 export const PokedexScreen = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -38,7 +39,10 @@ export const PokedexScreen = () => {
   return (
     // Aplicando o paddingTop dinâmico direto no estilo da View
     <View style={[styles.container, { paddingTop: Math.max(insets.top, 20) + 10 }]}>
-      <Text style={styles.title}>Pokédex</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>Pokédex</Text>
+        <LogoutButton />
+      </View>
       <TextInput
         placeholder="Buscar pokémon..."
         style={styles.input}
@@ -70,7 +74,13 @@ export const PokedexScreen = () => {
 const styles = StyleSheet.create({
   // Removido o paddingTop fixo daqui!
   container: { flex: 1, paddingHorizontal: 16 }, 
-  title: { fontSize: 32, fontWeight: 'bold', marginBottom: 12 },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  title: { fontSize: 32, fontWeight: 'bold' },
   input: {
     backgroundColor: '#f1f1f1',
     padding: 10,

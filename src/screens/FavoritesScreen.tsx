@@ -4,6 +4,7 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { PokemonCard } from "../components/PokemonCard";
+import { LogoutButton } from "../components/LogoutButton";
 import { useFavorites } from "../context/FavoritesContext";
 
 export const FavoritesScreen = () => {
@@ -14,7 +15,10 @@ export const FavoritesScreen = () => {
 
   return (
     <View style={[styles.container, { paddingTop: Math.max(insets.top, 20) + 10 }]}>
-      <Text style={styles.title}>Favoritos ❤️</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>Favoritos ❤️</Text>
+        <LogoutButton />
+      </View>
 
       <FlatList
         data={favorites}
@@ -37,7 +41,13 @@ export const FavoritesScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, paddingHorizontal: 16 },
-  title: { fontSize: 32, fontWeight: "bold", marginBottom: 12 },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  title: { fontSize: 32, fontWeight: "bold" },
   emptyText: {
     textAlign: "center",
     marginTop: 20,

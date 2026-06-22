@@ -24,6 +24,11 @@ export type RootTabParamList = {
   FavoritesTab: undefined;
 };
 
+// --- Pilha de autenticação (fluxo antes de logar) ---
+export type AuthStackParamList = {
+  Login: undefined; // Tela de login (sem parâmetros)
+};
+
 // Tipo de compatibilidade mantido para componentes existentes que ainda
 // referenciam RootStackParamList (ex.: PokemonCard). Funciona porque a tela
 // de detalhes está presente nas duas pilhas com o mesmo formato de params.

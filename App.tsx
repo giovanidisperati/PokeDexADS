@@ -5,18 +5,22 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { RootNavigator } from "./src/navigation/RootNavigator";
 import { FavoritesProvider } from "./src/context/FavoritesContext";
+import { AuthProvider } from "./src/context/AuthContext";
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      {/* O FavoritesProvider envolve toda a navegação. Assim, qualquer tela
-          (e qualquer Stack dentro das abas) consegue acessar os favoritos
-          via o hook useFavorites(). */}
-      <FavoritesProvider>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </FavoritesProvider>
+      {/* A ordem dos Providers importa: o AuthProvider fica mais externo porque
+          ele decide (no RootNavigator) se mostra o login ou as abas. O
+          FavoritesProvider fica dentro, pois só faz sentido quando o usuário
+          está autenticado e navegando no app. */}
+      <AuthProvider>
+        <FavoritesProvider>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </FavoritesProvider>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }
